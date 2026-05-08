@@ -37,4 +37,4 @@ A simple Weather Website project built using **HTML**, **CSS**, and **JavaScript
 ## Note
 This project is currently under development and will be updated regularly.
 
-This project is currently under development and will be updated regularly.
+
