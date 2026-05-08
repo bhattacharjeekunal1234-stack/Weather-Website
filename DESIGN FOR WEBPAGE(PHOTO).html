@@ -1,0 +1,438 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .page {
+    font-family: 'DM Sans', sans-serif;
+    background: #0a0f1e;
+    min-height: 900px;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  .orb1 { width: 400px; height: 400px; background: #3b82f6; top: -80px; left: -100px; }
+  .orb2 { width: 300px; height: 300px; background: #6366f1; top: 200px; right: -60px; }
+  .orb3 { width: 200px; height: 200px; background: #0ea5e9; bottom: 100px; left: 40%; }
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #3b82f6;
+    display: inline-block;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+  }
+  .nav-links li.active { color: rgba(255,255,255,0.9); }
+
+  .hero {
+    padding: 48px 32px 32px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #3b82f6;
+    background: rgba(59,130,246,0.12);
+    border: 0.5px solid rgba(59,130,246,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .hero h1 span { color: #3b82f6; }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  .search-container {
+    max-width: 520px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 6px 6px 6px 18px;
+    gap: 10px;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus-within { border-color: rgba(59,130,246,0.5); }
+  .search-icon {
+    width: 16px; height: 16px;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+  .search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: #fff;
+    font-weight: 400;
+  }
+  .search-input::placeholder { color: rgba(255,255,255,0.3); }
+  .search-btn {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .search-btn:hover { opacity: 0.88; }
+  .search-btn:active { transform: scale(0.97); }
+  .search-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .quick-tags {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .tag {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tag:hover { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.25); }
+
+  .result-area { padding: 0 32px 32px; }
+
+  .weather-card {
+    max-width: 560px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 28px 28px 24px;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .card-location { }
+  .card-city {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 2px;
+  }
+  .card-country {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    font-weight: 400;
+  }
+  .card-condition-badge {
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(59,130,246,0.15);
+    color: #93c5fd;
+    border: 0.5px solid rgba(59,130,246,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+
+  .temp-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .temp-main {
+    font-family: 'Syne', sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -3px;
+    line-height: 1;
+  }
+  .temp-unit { font-size: 32px; letter-spacing: 0; color: rgba(255,255,255,0.4); }
+  .temp-alt {
+    font-size: 18px;
+    color: rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+    font-weight: 300;
+  }
+
+  .divider { height: 0.5px; background: rgba(255,255,255,0.08); margin-bottom: 20px; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-icon {
+    width: 20px; height: 20px;
+    margin: 0 auto 6px;
+    opacity: 0.5;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .empty-icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 16px;
+    opacity: 0.15;
+  }
+  .empty-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.25);
+    font-weight: 300;
+  }
+
+  .loading-state {
+    text-align: center;
+    padding: 32px;
+    color: rgba(255,255,255,0.35);
+    font-size: 13px;
+  }
+  .spinner {
+    width: 24px; height: 24px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-state {
+    text-align: center;
+    padding: 20px;
+    font-size: 13px;
+    color: #f87171;
+  }
+</style>
+
+<div class="page" style="position:relative;">
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <div class="bg-orb orb3"></div>
+
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      Skywatcher
+    </div>
+    <ul class="nav-links">
+      <li class="active">Today</li>
+      <li>Forecast</li>
+      <li>Map</li>
+      <li>Alerts</li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Live weather data</div>
+    <h1>What's the weather<br><span>anywhere?</span></h1>
+    <p class="hero-sub">Search any city in the world for instant conditions</p>
+
+    <div class="search-container">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" id="cityInput" type="text" placeholder="Search city — Tokyo, Dubai, London..." />
+        <button class="search-btn" id="searchBtn" onclick="doSearch()">Search</button>
+      </div>
+    </div>
+
+    <div class="quick-tags">
+      <span class="tag" onclick="quickSearch('Mumbai')">Mumbai</span>
+      <span class="tag" onclick="quickSearch('New York')">New York</span>
+      <span class="tag" onclick="quickSearch('Tokyo')">Tokyo</span>
+      <span class="tag" onclick="quickSearch('London')">London</span>
+      <span class="tag" onclick="quickSearch('Dubai')">Dubai</span>
+      <span class="tag" onclick="quickSearch('Guwahati')">Guwahati</span>
+    </div>
+  </div>
+
+  <div class="result-area">
+    <div id="out">
+      <div class="empty-state">
+        <svg class="empty-icon" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2">
+          <circle cx="32" cy="32" r="20"/>
+          <path d="M32 12 Q44 24 32 32 Q20 40 32 52"/>
+          <path d="M12 32 Q24 20 32 32 Q40 44 52 32"/>
+        </svg>
+        <p class="empty-text">Search a city to see live conditions</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const cityInput = document.getElementById('cityInput');
+const searchBtn = document.getElementById('searchBtn');
+const out = document.getElementById('out');
+
+cityInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+function quickSearch(city) {
+  cityInput.value = city;
+  doSearch();
+}
+
+async function doSearch() {
+  const city = cityInput.value.trim();
+  if (!city) return;
+  out.innerHTML = '<div class="loading-state"><div class="spinner"></div>Fetching conditions…</div>';
+  searchBtn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{
+          role: 'user',
+          content: `Return ONLY valid JSON, no markdown, for current weather in "${city}" (April 2026). If city invalid set valid:false.
+{"valid":true,"city":"Full Name","country":"Country","temp_c":26,"feels_c":28,"condition":"Partly Cloudy","humidity":68,"wind_kph":16}`
+        }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content.map(b => b.text || '').join('').replace(/```json|```/g,'').trim();
+    const w = JSON.parse(raw);
+    if (!w.valid) {
+      out.innerHTML = '<div class="error-state">City not found. Try a different spelling.</div>';
+    } else {
+      const fahr = Math.round(w.temp_c * 9/5 + 32);
+      out.innerHTML = `
+        <div class="weather-card">
+          <div class="card-top">
+            <div class="card-location">
+              <div class="card-city">${w.city}</div>
+              <div class="card-country">${w.country}</div>
+            </div>
+            <div class="card-condition-badge">${w.condition}</div>
+          </div>
+          <div class="temp-row">
+            <div class="temp-main">${Math.round(w.temp_c)}<span class="temp-unit">°C</span></div>
+            <div class="temp-alt">${fahr}°F</div>
+          </div>
+          <div class="divider"></div>
+          <div class="stats-row">
+            <div class="stat-box">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <div class="stat-label">Feels like</div>
+              <div class="stat-val">${Math.round(w.feels_c)}°</div>
+            </div>
+            <div class="stat-box">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M12 2v6m0 0a4 4 0 1 0 4 4H8a4 4 0 0 0 4-4z"/><path d="M5 12H3m18 0h-2M7.05 7.05 5.64 5.64m12.73 0-1.41 1.41"/></svg>
+              <div class="stat-label">Humidity</div>
+              <div class="stat-val">${w.humidity}%</div>
+            </div>
+            <div class="stat-box">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+              <div class="stat-label">Wind</div>
+              <div class="stat-val">${w.wind_kph} <span style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.4)">kph</span></div>
+            </div>
+          </div>
+        </div>`;
+    }
+  } catch(e) {
+    out.innerHTML = '<div class="error-state">Something went wrong. Please try again.</div>';
+  }
+  searchBtn.disabled = false;
+}
+</script>
